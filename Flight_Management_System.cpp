@@ -15,11 +15,11 @@ const vector<string> i_destination = {"LONDON", "BERLIN", "DUBAI", "RIYADH", "BE
 class Passenger
 {
 private:
-	const int bseats = 10, eseats = 2, wseats = 3;
+	const int bseats = 10, eseats = 2;
 
 protected:
 	string full_name, phone, mealtype, passport, Address, origin, destination, type, datedep;
-	int bus, eco, payment, wait;
+	int bus, eco, payment;
 
 public:
 	int bussiness_pay;
@@ -32,7 +32,6 @@ public:
 		passport = pass_no;
 		bus = bseats;
 		eco = eseats;
-		wait = wseats;
 	}
 
 	virtual bool ldest() = 0;
