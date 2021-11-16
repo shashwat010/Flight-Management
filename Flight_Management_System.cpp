@@ -47,15 +47,14 @@ string datecheck();
 class Booking : public Passenger
 {
 protected:
-	int i, j, n, m, k, NoOfSeats, choice;
+	int i, j, check_origin, check_dept, k, NoOfSeats, choice;
 
 public:
 	Booking(string f, string num, string add, string pass, string dd) : Passenger(f, num, add, pass, dd)
 	{
-		n = 0;
-		m = 0;
-	}
-	// cout<<"Flight from "<<i_destination[i]<<" to "<<i_destination[j]<<endl;
+		check_origin = 0;
+		check_dept= 0;
+	} 
 	static void show(vector<string> location)
 	{
 		for (int i = 0; i < location.size(); i++)
@@ -91,10 +90,10 @@ public:
 		else
 		{
 			if (find(l_destination.begin(), l_destination.end(), origin) != l_destination.end())
-				n++;
+				check_origin++;
 			if (find(l_destination.begin(), l_destination.end(), destination) != l_destination.end())
-				m++;
-			if (m == 1 && n == 1)
+				check_dept++;
+			if (check_dept == 1 && check_origin == 1)
 			{
 				payment = lpayment(origin, destination);
 				return true;
@@ -124,10 +123,10 @@ public:
 		else
 		{
 			if (find(i_destination.begin(), i_destination.end(), origin) != i_destination.end())
-				n++;
+				check_origin++;
 			if (find(i_destination.begin(), i_destination.end(), destination) != i_destination.end())
-				m++;
-			if (m == 1 && n == 1)
+				check_dept++;
+			if (check_origin == 1 && check_dept == 1)
 			{
 				payment = ipayment(origin, destination);
 				return true;
@@ -228,8 +227,9 @@ public:
 
 	void Registration()
 	{
-		int tkt;
-		tkt = 50 + rand() % (bus + eco);
+		int tkt[NoOfSeats];
+		for(int i=0;i<NoOfSeats;i++)
+			tkt[i]=50+(bus+eco+i+1);
 		type = (k == 49) ? "Business" : "Economy";
 		ofstream outfile;
 		outfile.open(full_name + ".txt");
@@ -253,8 +253,9 @@ public:
 				<< endl
 				<< "Time: 4.00 PM"
 				<< endl
-				<< "Ticket: HF" << tkt
-				<< endl
+				<< "Ticket: HF" ;
+				for(int i=0;i<NoOfSeats;i++) outfile<<tkt[i]<<' ';
+				outfile<< endl
 				<< "Bill(in Indian rupees): " << payment << "/-" << endl;
 		outfile.close();
 	}
@@ -365,7 +366,7 @@ public:
 		{
 			cout << endl
 				 << "Enter your Ticket Number or Press 0 to exit\nTicket Number: ";
-			cin >> temp;
+			getline(cin,temp);
 			if (temp == "0")
 				return 1;
 			string v("Ticket: " + temp);
@@ -465,7 +466,7 @@ public:
 	{
 		cout << "The height of skies was first touched by our airline in 1969. Since then,\nHigh Fly is the world's leading airline with 4 biggest airplanes.\nWe are at the customers high service in cuisine, comfort and care.\nSo make a plan and fly high with High Fly." << endl
 			 << endl;
-		cout << "Press any key to continue...";
+		cout << "Press any key to continue...\n";
 		getch();
 	}
 };
@@ -545,8 +546,7 @@ public:
 		char ch;
 		cout << "\n\n\n\n\tFollowing are the international flights available" << endl;
 		Booking::show(i_destination);
-		for (i = 0; i < 11; i++)
-			cout << "\n\n\n\n\tFollowing are the local flights available" << endl;
+		cout << "\n\n\n\n\tFollowing are the local flights available" << endl;
 		Booking::show(l_destination);
 		cout << endl
 			 << "Do you want to book a flight(y/n) ";
@@ -636,7 +636,7 @@ int main()
 			}
 		}
 
-		if (strcmp(Username, "admin") == 0 && strcmp(Password, "pass") == 0)
+		if (strcmp(Username, "shashwat") == 0 && strcmp(Password, "saurabh") == 0)
 		{
 			cout << "\n\n";
 			cout << "\t\t\t\t";
@@ -675,6 +675,7 @@ int main()
 	bool ans;
 	char ch;
 back2menu:
+	system("cls");
 	cout << ">>>>>>>>>>MENU<<<<<<<<<<<" << endl;
 	cout << endl
 		 << "Press 1 for Booking" << endl
@@ -682,6 +683,7 @@ back2menu:
 		 << "Press 3 for Complaint" << endl
 		 << "Press 4 for About" << endl
 		 << "Press 5 for Manage" << endl
+		 << "Press 6 for Ticket Details" << endl
 		 << "Press 0 for Exit\n";
 	ch = getch();
 	system("cls");
@@ -814,6 +816,21 @@ back2menu:
 		Manage man;
 		cout << full_name;
 		man.change(full_name);
+		goto back2menu;
+	}
+	case 54:
+	{
+		cout << ">>>>>>>>>>TICKET DETAILS<<<<<<<<<<<\n";
+		string temp;
+		ifstream infile;
+		infile.open(full_name + ".txt");
+		while (!infile.eof())
+		{
+			getline(infile, temp);
+			cout << temp << endl;
+		}
+		cout<<"Press any key to continue...\n";
+		getch();
 		goto back2menu;
 	}
 
